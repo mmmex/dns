@@ -21,6 +21,8 @@
 2. Переходим в папку с проектом: `cd vagrant-bind`
 3. Выполняем запуск: `vagrant up`
 
+* В процессе доставки конфигурации ansible на ns01 [у меня возникла ошибка](#ошибка-при-запуске-стенда). Решение: `vagrant provision ns01; vagrant up`
+
 * Будет поднято 3 ВМ:
 
 | Имя хоста | IP-адрес      | Роль              |
@@ -272,6 +274,34 @@ drwxr-xr-x. root root  system_u:object_r:etc_t:s0       ..
 -rw-rw----. root named system_u:object_r:named_zone_t:s0 named.dns.lab.client
 -rw-rw----. root named system_u:object_r:named_zone_t:s0 named.dns.lab.rev
 -rw-rw----. root named system_u:object_r:named_zone_t:s0 named.newdns.lab
+```
+
+#### Ошибка при запуске стенда
+
+После запуска стенда `vagrant up`, на сервере ns01 в процессе работы скрипта ansible возникает ошибка:
+```bash
+TASK [Setsebool for named_zone_t] **********************************************
+fatal: [ns01]: FAILED! => {"changed": false, "module_stderr": "Shared connection to 127.0.0.1 closed.\r\n", "module_stdout": "/bin/sh: line 1:  5017 Убито              /usr/bin/python /home/vagrant/.ansible/tmp/ansible-tmp-1674916369.157325-230713544677949/AnsiballZ_seboolean.py\r\n", "msg": "MODULE FAILURE\nSee stdout/stderr for the exact error", "rc": 137}                                                                                                                  
+
+PLAY RECAP *********************************************************************
+ns01                       : ok=13   changed=11   unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+```
+
+После повторного применения скрипта командой `vagrant provision ns01` все проходит удачно. В чем причина понять сразу не получилось.
+
+Мое окружение:
+```bash
+test@test-virtual-machine:~/Otus/dns/vagrant-bind$ vagrant -v
+Vagrant 2.3.0
+test@test-virtual-machine:~/Otus/dns/vagrant-bind$ ansible --version
+ansible 2.9.6
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/home/test/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 3.8.10 (default, Nov 14 2022, 12:59:47) [GCC 9.4.0]
+test@test-virtual-machine:~/Otus/dns/vagrant-bind$ uname -a
+Linux test-virtual-machine 5.15.0-58-generic #64~20.04.1-Ubuntu SMP Fri Jan 6 16:42:31 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
 ---
