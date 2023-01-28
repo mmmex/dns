@@ -157,6 +157,53 @@ Jan 28 03:07:02 ns02 named[616]: dumping master file: /etc/named/tmp-KxpQ8THmqO:
 Jan 28 03:08:31 ns02 named[616]: dumping master file: /etc/named/tmp-RKl4x8Qq6o: open: permission denied
 ```
 
+Смотрим логи audit:
+```bash
+[root@ns02 ~]# cat /var/log/audit/audit.log | audit2why
+type=AVC msg=audit(1674875346.953:1548): avc:  denied  { create } for  pid=4391 comm="isc-worker0000" name="tmp-irKLEjHg3j" scontext=system_u:system_r:named_t:s0 tcontext=system_u:object_r:etc_t:s0 tclass=file permissive=0
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+
+type=AVC msg=audit(1674875346.982:1549): avc:  denied  { create } for  pid=4391 comm="isc-worker0000" name="tmp-odzDs5dMSs" scontext=system_u:system_r:named_t:s0 tcontext=system_u:object_r:etc_t:s0 tclass=file permissive=0
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+
+type=AVC msg=audit(1674875346.993:1550): avc:  denied  { create } for  pid=4391 comm="isc-worker0000" name="tmp-sgIBANOJgS" scontext=system_u:system_r:named_t:s0 tcontext=system_u:object_r:etc_t:s0 tclass=file permissive=0
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+
+type=AVC msg=audit(1674875347.001:1551): avc:  denied  { create } for  pid=4391 comm="isc-worker0000" name="tmp-Gw0flFBPwe" scontext=system_u:system_r:named_t:s0 tcontext=system_u:object_r:etc_t:s0 tclass=file permissive=0
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+
+type=AVC msg=audit(1674875971.631:1619): avc:  denied  { create } for  pid=4391 comm="isc-worker0000" name="tmp-Wz70QZndHT" scontext=system_u:system_r:named_t:s0 tcontext=system_u:object_r:etc_t:s0 tclass=file permissive=0
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+
+[root@ns02 ~]# cat /var/log/audit/audit.log | audit2allow
+
+
+#============= named_t ==============
+
+#!!!! WARNING: 'etc_t' is a base type.
+allow named_t etc_t:file create;
+```
+
 Проверяю файлы зон, которые должны приехать с master:
 
 ```bash
