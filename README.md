@@ -17,7 +17,7 @@
 
 ### Запуск проекта
 
-1. Клонируем ропозиторий: `git clone ...`
+1. Клонируем ропозиторий: `git clone https://github.com/mmmex/dns.git`
 2. Переходим в папку с проектом: `cd dns/vagrant-bind`
 3. Выполняем запуск: `vagrant up`
 
