@@ -99,6 +99,50 @@ view "client2" {
 };
 ```
 
+#### Проверка
+
+Проверяем client:
+```bash
+[vagrant@client ~]$ ping www.newdns.lab
+PING www.newdns.lab (192.168.50.15) 56(84) bytes of data.
+64 bytes from client (192.168.50.15): icmp_seq=1 ttl=64 time=0.114 ms
+64 bytes from client (192.168.50.15): icmp_seq=2 ttl=64 time=0.035 ms
+^C
+--- www.newdns.lab ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.035/0.074/0.114/0.040 ms
+[vagrant@client ~]$ ping web2.dns.lab
+ping: web2.dns.lab: Name or service not known
+[vagrant@client ~]$ ping web1.dns.lab
+PING web1.dns.lab (192.168.50.15) 56(84) bytes of data.
+64 bytes from client (192.168.50.15): icmp_seq=1 ttl=64 time=0.013 ms
+64 bytes from client (192.168.50.15): icmp_seq=2 ttl=64 time=0.032 ms
+^C
+--- web1.dns.lab ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 0.013/0.022/0.032/0.010 ms
+```
+
+Проверяем client2:
+```bash
+[vagrant@client2 ~]$ ping web1.dns.lab
+PING web1.dns.lab (192.168.50.15) 56(84) bytes of data.
+64 bytes from 192.168.50.15 (192.168.50.15): icmp_seq=1 ttl=64 time=1.54 ms
+^C
+--- web1.dns.lab ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 1.542/1.542/1.542/0.000 ms
+[vagrant@client2 ~]$ ping web2.dns.lab
+PING web2.dns.lab (192.168.50.16) 56(84) bytes of data.
+64 bytes from client2 (192.168.50.16): icmp_seq=1 ttl=64 time=0.060 ms
+^C
+--- web2.dns.lab ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.060/0.060/0.060/0.000 ms
+[vagrant@client2 ~]$ ping www.newdns.lab
+ping: www.newdns.lab: Name or service not known
+```
+
 ### SELinux устранение проблем
 
 В логах сервиса named на ВМ ns02 такие ошибки:
