@@ -17,7 +17,7 @@
 
 ### Запуск проекта
 
-1. Клонируем ропозиторий: `git clone https://github.com/mmmex/dns.git`
+1. Клонируем ропозиторий: `git clone https://github.com/mmmex/vagrant-bind.git`
 2. Переходим в папку с проектом: `cd dns/vagrant-bind`
 3. Выполняем запуск: `vagrant up`
 
@@ -40,7 +40,7 @@
 
 ### Настройка split-dns
 
-* client доступны зоны dns.lab и newdns.lab, но в зоне dns.lab представлены записи согласно настроенной для него [ресурсной таблицы](vagrant-bind/provisioning/named.dns.lab.client):
+* client доступны зоны dns.lab и newdns.lab, но в зоне dns.lab представлены записи согласно настроенной для него [ресурсной таблицы](https://github.com/mmmex/vagrant-bind/blob/master/provisioning/named.dns.lab.client):
 
 **/etc/named.conf:**
 ```bash
@@ -69,7 +69,7 @@ view "client" {
     };
 };
 ```
-* client2 доступна только одна [зона dns.lab](vagrant-bind/provisioning/named.dns.lab):
+* client2 доступна только одна [зона dns.lab](https://github.com/mmmex/vagrant-bind/blob/master/provisioning/named.dns.lab):
 
 **/etc/named.conf:**
 ```bash
@@ -130,7 +130,7 @@ drwxr-xr-x. root root  system_u:object_r:etc_t:s0       ..
 
 Файлы зон должны находится в каталоге `/var/named`, и ранее я уже [разбирал данную проблему](https://github.com/mmmex/selinux#%D0%BE%D0%B1%D0%B5%D1%81%D0%BF%D0%B5%D1%87%D0%B8%D1%82%D1%8C-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BE%D1%81%D0%BF%D0%BE%D1%81%D0%BE%D0%B1%D0%BD%D0%BE%D1%81%D1%82%D1%8C-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F-%D0%BF%D1%80%D0%B8-%D0%B2%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%BD%D0%BE%D0%BC-selinux). Есть два пути, в прошлый раз я перемещал каталог с зонами в /var/named, в данном примере изменю тип контекста безопаности для каталога /etc/named.
 
-В [playbook ansible](vagrant-bind/provisioning/playbook.yml) добавил 3 задачи для ns01 и ns02:
+В [playbook ansible](https://github.com/mmmex/vagrant-bind/blob/master/provisioning/playbook.yml) добавил 3 задачи для ns01 и ns02:
 
 ```yml
   - name: Setsebool for named_zone_t
