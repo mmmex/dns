@@ -225,8 +225,10 @@ drwxr-xr-x. root root  system_u:object_r:etc_t:s0       ..
 
 ```yml
   - name: Setsebool for named_zone_t
-    ansible.builtin.command:
-      name: setsebool -P named_write_master_zones 1
+    seboolean:
+      name: named_write_master_zones
+      state: yes
+      persistent: yes
   - name: SElinux the crutch for /etc/named
     sefcontext:
       target: "/etc/named(/.*)?"
