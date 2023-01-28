@@ -189,6 +189,19 @@ drwxr-xr-x. root root  system_u:object_r:etc_t:s0       ..
     command: restorecon -R -v /etc/named
 ```
 
+Те-же действия с командной строки:
+```bash
+[root@ns01 ~]# setsebool -P named_write_master_zones 1
+[root@ns01 ~]# semanage fcontext -a -t named_zone_t "/etc/named(/.*)?"
+[root@ns01 ~]# restorecon -R -v /etc/named
+restorecon reset /etc/named context system_u:object_r:etc_t:s0->system_u:object_r:named_zone_t:s0
+restorecon reset /etc/named/named.ddns.lab context system_u:object_r:etc_t:s0->system_u:object_r:named_zone_t:s0
+restorecon reset /etc/named/named.dns.lab context system_u:object_r:etc_t:s0->system_u:object_r:named_zone_t:s0
+restorecon reset /etc/named/named.dns.lab.client context system_u:object_r:etc_t:s0->system_u:object_r:named_zone_t:s0
+restorecon reset /etc/named/named.dns.lab.rev context system_u:object_r:etc_t:s0->system_u:object_r:named_zone_t:s0
+restorecon reset /etc/named/named.newdns.lab context system_u:object_r:etc_t:s0->system_u:object_r:named_zone_t:s0
+```
+
 В каталоге на ns02 должы приехать зоны с мастера:
 ```bash
 [root@ns02 ~]# ls -alZ /etc/named
@@ -199,6 +212,20 @@ drwxr-xr-x. root  root  system_u:object_r:etc_t:s0       ..
 -rw-r--r--. named named system_u:object_r:named_zone_t:s0 named.dns.lab.rev
 -rw-r--r--. named named system_u:object_r:named_zone_t:s0 named.newdns.lab
 ```
+
+Также посмотрим в каталог /etc/named на ns01:
+```bash
+[root@ns01 ~]# ls -alZ /etc/named
+drw-rwx---. root named system_u:object_r:named_zone_t:s0 .
+drwxr-xr-x. root root  system_u:object_r:etc_t:s0       ..
+-rw-rw----. root named system_u:object_r:named_zone_t:s0 named.ddns.lab
+-rw-rw----. root named system_u:object_r:named_zone_t:s0 named.dns.lab
+-rw-rw----. root named system_u:object_r:named_zone_t:s0 named.dns.lab.client
+-rw-rw----. root named system_u:object_r:named_zone_t:s0 named.dns.lab.rev
+-rw-rw----. root named system_u:object_r:named_zone_t:s0 named.newdns.lab
+```
+
+---
 
 [Полезная ссылка по SELinux](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/sect-security-enhanced_linux-working_with_selinux-selinux_contexts_labeling_files)
 
