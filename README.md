@@ -18,7 +18,7 @@
 ### Запуск проекта
 
 1. Клонируем ропозиторий: `git clone https://github.com/mmmex/vagrant-bind.git`
-2. Переходим в папку с проектом: `cd dns/vagrant-bind`
+2. Переходим в папку с проектом: `cd vagrant-bind`
 3. Выполняем запуск: `vagrant up`
 
 * Будет поднято 3 ВМ:
